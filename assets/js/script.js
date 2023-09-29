@@ -15,46 +15,49 @@ const gameDuration = 3;
 // need interval timer to get countdown
 
 
-var score = {
+var myScore = {
     wins: 0,
     losses: 0
 };
-
 
 resetScoreButton.addEventListener("click", function() {
     resetScore();
 });
 
 function resetScore () {
-    score.wins = 0;
-    score.losses = 0;
+    myScore.wins = 0;
+    myScore.losses = 0;
 
     writeScore()
 }
 
 
-function writeScore() {
-    
-    console.log(score);
-    localStorage.setItem("scoreStringify", JSON.stringify(score));
 
-    winCountEl.textContent = score.wins;
-    lossCountEl.textContent = score.losses;
+function writeScore() {       
+    winCountEl.textContent = myScore.wins;
+    lossCountEl.textContent = myScore.losses;
 }
 
 function getScore() {
-    score = JSON.parse(localStorage.getItem("scoreStringify"));
+    myScore = JSON.parse(localStorage.getItem("scoreStringify"));
+    writeScore()
+}
+
+function saveScore() {
+    localStorage.setItem("scoreStringify", JSON.stringify(myScore));
+    writeScore()
 }
 
 
 startButton.addEventListener("click", function() {
-    console.log(score);
+    console.log(myScore);
     startCountdown();
 });
 
 
 function startCountdown() {
-    console.log(score);
+    
+    console.log(myScore);
 
     var secondsRemaining = gameDuration;
     var timerInterval = setInterval(function() {
@@ -74,12 +77,12 @@ function startCountdown() {
 
             
             // temp for testing
-            // score.wins = 3;
-            // score.losses = 2;
+            myScore.wins = 3;
+            myScore.losses = 2;
 
-            console.log(score);
+            console.log(myScore);
 
-            // writeScore();
+            saveScore();
             // ************
         }
 
@@ -93,7 +96,8 @@ function init() {
     startButton.textContent = "Start"
     countdownEl.textContent = "Are you ready?";
 
-    getScore();
+    // getScore();
 }
 
 init();
+
