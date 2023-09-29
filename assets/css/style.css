@@ -4,6 +4,9 @@
   box-sizing: border-box;
 }
 
+h1 {
+
+}
 h3 {
     color: gray;
 }
@@ -22,6 +25,10 @@ body {
 
 #game-area {
     background-color: rgb(170, 217, 217);
+}
+
+#mystery-word {
+
 }
 
 #results-area {
