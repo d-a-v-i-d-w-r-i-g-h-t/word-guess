@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <title>Word Guesss Game</title>
+
+
+</head>
+
+
+<header>
+    <h3>header</h3>
+
+    <h1 id="title" >Word Guess Game</h1>
+
+    <!-- Button to START the game -- need eventListener -->
+    <button id="start-button">Start</button>
+
+</header>
+<body>
+    <h3>body</h3>
+
+    <!-- Container Div for game + results areas, use display:grid maybe? -->
+    <div id="game-container" >
+        <h3>game container</h3>
+        <!-- Div for the game area / YOU WON!!! message -->
+        <div id="game-area" >
+            <h3>game area</h3>
+
+            <!-- P for game: underscores for unguessed letters -->
+            <p id="word">mystery word goes here</p>
+
+            <!-- P for game: You Won/You Lost message (same P as above?)-->
+
+        </div>
+
+        <!-- Div for the results area / timer/ reset button -->
+        <div id="results-area" >
+            <h3>results area</h3>
+
+            <!-- P for Wins: with a span for winCount to be inserted -->
+            <p><strong>Wins:</strong> <span id="winCount" >0</span></p>
+
+            <!-- P for Losses: with a span for lossCount to be inserted -->
+            <p><strong>Losses:</strong> <span id="lossCount" >0</span></p>
+
+            <!-- Button to RESET the score -- need another eventListener -->
+            <button id="reset-score" >Reset Score</button>
+
+            <!-- Div for timer area -->
+            <div id="countdown-timer" >
+                <h3>countdown timer</h3>
+
+                <!-- P for countdown timer to be inserted, maybe count text changes to "Time's Up" at zero -->
+                <p id="countdown" >0</p>
+
+                <!-- P for "seconds remaining" -->
+                <p id="countdown-text" >seconds remaining</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="./assets/js/script.js"></script>
+
+</body>
+</html>

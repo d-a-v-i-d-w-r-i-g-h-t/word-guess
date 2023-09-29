@@ -1,0 +1,53 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h3 {
+    color: gray;
+}
+
+header {
+    background-color: azure;
+}
+
+body {
+    background-color: aliceblue;
+}
+
+#game-container {
+    background-color: antiquewhite;
+}
+
+#game-area {
+    background-color: rgb(170, 217, 217);
+}
+
+#results-area {
+    background-color: beige;
+}
+
+#winCount {
+
+}
+
+#lossCount {
+
+}
+
+#reset-score {
+
+}
+
+#countdown-timer {
+
+}
+
+#countdown {
+
+}
+
+#countdown-text {
+
+}
