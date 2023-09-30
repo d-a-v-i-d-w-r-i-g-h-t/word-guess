@@ -15,6 +15,14 @@ header {
     background-color: azure;
 }
 
+#id {
+
+}
+
+#start-button {
+    
+}
+
 body {
     background-color: aliceblue;
 }
@@ -66,7 +74,7 @@ body {
 }
 
 #countdown {
-
+    font-size: 200%;
 }
 
 #countdown-text {

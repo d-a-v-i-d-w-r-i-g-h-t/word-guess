@@ -152,9 +152,6 @@ function startCountdown() {
 
         secondsRemaining--;
 
-        countdownEl.textContent = secondsRemaining;
-        countdownTextEl.textContent = "seconds remaining";
-
         if (youWon === true) {
             clearInterval(timerInterval);
         }
@@ -165,6 +162,9 @@ function startCountdown() {
             youAreALoser()
             endGame();
         }
+
+        countdownEl.textContent = secondsRemaining;
+        countdownTextEl.textContent = "seconds remaining";
 
     }, 1000);
 
