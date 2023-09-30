@@ -10,6 +10,7 @@ var countdownEl = document.getElementById("countdown");
 var countdownTextEl = document.getElementById("countdown-text");
 
 const gameDuration = 61;
+const penalty = 5;
 const wordList = ["sandwich", "moustache", "cat", "balloon", "grocery", "distribution", "river", "chocolate", "possibility", "article", "poet", "philosophy", "housing", "republic", "construction", "restaurant", "payment", "definition", "pizza", "area", "people", "confusion", "childhood", "breath", "leader", "committee", "teaching", "employer", "coffee", "opinion", "queen", "college", "interaction", "psychology", "proposal", "accident", "discussion", "shopping", "mom", "disaster", "clothes", "potato", "session", "growth", "ear", "orange", "procedure", "affair", "salad", "dealer", "hall", "charity", "assumption", "country"];
 
 // on init get scores from storage, if they are not
@@ -23,6 +24,7 @@ var wordArray = [];
 var numberOfLetters = 0;
 var countCorrectLetters = 0;
 var youWon = false;
+var secondsRemaining = 0;
 
 startButton.addEventListener("click", function() {
     playGame();
@@ -39,15 +41,21 @@ document.addEventListener("keydown", function(event) {
 
 
 function checkForMatch(key) {
-
+    var correctMatch = false;
     for (var i = 0; i < numberOfLetters; i++) {
 
         if (wordArray[i] === key) {
             document.getElementById("letter" + i).textContent = key;
             countCorrectLetters++
+            correctMatch = true;
         }
 
     }
+
+    if (correctMatch === false) {
+        secondsRemaining -= penalty;
+    }
+
     if (countCorrectLetters === numberOfLetters) {
         youAreAWinner();
         endGame();
@@ -139,7 +147,7 @@ function saveScore() {
 
 function startCountdown() {
     
-    var secondsRemaining = gameDuration;
+    secondsRemaining = gameDuration;
     var timerInterval = setInterval(function() {
 
         secondsRemaining--;
@@ -151,7 +159,7 @@ function startCountdown() {
             clearInterval(timerInterval);
         }
 
-        if(secondsRemaining === 0) {
+        if(secondsRemaining <= 0) {
             clearInterval(timerInterval);
 
             youAreALoser()
