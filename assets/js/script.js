@@ -102,6 +102,7 @@ function addDiv(text, index) {
 function playGame() {
     countCorrectLetters = 0;
     youWon = false;
+    countdownEl.style.color = "black";
 
     startCountdown();
 
@@ -172,11 +173,15 @@ function startCountdown() {
         }
 
         secondsRemaining--;
-        if (secondsRemaining >= 0) {
+        if (secondsRemaining >= 0 && youWon === false) {
             countdownEl.textContent = secondsRemaining;
         }
 
-        if(secondsRemaining <= 0) {
+        if (secondsRemaining <= 10) {
+            countdownEl.style.color = "red";
+        }
+
+        if (secondsRemaining <= 0) {
             clearInterval(timerInterval);
 
             youAreALoser();
@@ -197,6 +202,7 @@ function youAreAWinner() {
 function youAreALoser() {
     youWon = false;
     myScore.losses++;
+    countdownEl.style.color = "black";
     countdownEl.textContent = "Time's up!";
     countdownTextEl.textContent = "";
 }
