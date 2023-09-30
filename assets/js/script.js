@@ -95,6 +95,8 @@ function addDiv(text, index) {
 function playGame() {
     countCorrectLetters = 0;
     youWon = false;
+    countdownTextEl.textContent = "seconds remaining";
+
 
     startCountdown();
     var mysteryWord = getNextWord();
@@ -136,6 +138,13 @@ function writeScore() {
 
 function getScore() {
     myScore = JSON.parse(localStorage.getItem("scoreStringify"));
+    console.log(myScore);
+    if (!myScore) {
+        myScore = {
+            wins: 0,
+            losses: 0
+        }
+    }
     writeScore()
 }
 
@@ -163,8 +172,9 @@ function startCountdown() {
             endGame();
         }
 
-        countdownEl.textContent = secondsRemaining;
-        countdownTextEl.textContent = "seconds remaining";
+        if (secondsRemaining >= 0) {
+            countdownEl.textContent = secondsRemaining;
+        }
 
     }, 1000);
 
@@ -184,6 +194,8 @@ function youAreALoser() {
 
 
 function endGame() {
+    document.removeEventListener("keydown", function(){});
+    
     saveScore();
 
     resultMessage(youWon);
