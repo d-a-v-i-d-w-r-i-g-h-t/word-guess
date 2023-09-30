@@ -77,6 +77,7 @@ function resultMessage(iWon) {
     } else {
         message = "YOU LOST!!!😖"
     }
+    document.removeEventListener("keydown", function(){});
     clearDivs();
     addDiv(message, 0)
 }
@@ -192,7 +193,6 @@ function youAreALoser() {
 
 
 function endGame() {
-    document.removeEventListener("keydown", function(){});
     
     saveScore();
 
