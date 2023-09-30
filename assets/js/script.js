@@ -44,7 +44,7 @@ function checkForMatch(key) {
     var correctMatch = false;
     for (var i = 0; i < numberOfLetters; i++) {
 
-        if (wordArray[i] === key) {
+        if (wordArray[i] === key && document.getElementById("letter" + i).textContent !== key) {
             document.getElementById("letter" + i).textContent = key;
             countCorrectLetters++
             correctMatch = true;
