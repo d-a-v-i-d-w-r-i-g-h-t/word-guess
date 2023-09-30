@@ -31,80 +31,10 @@ startButton.addEventListener("click", function() {
 });
 
 
-resetScoreButton.addEventListener("click", function() {
-    resetScore();
-});
-
-
-document.addEventListener("keydown", function(event) {
-   keyPress = event.key;
-   checkForMatch(keyPress);
-});
-
-
-function checkForMatch(key) {
-    var correctMatch = false;
-    for (var i = 0; i < numberOfLetters; i++) {
-
-        if (wordArray[i] === key && document.getElementById("letter" + i).textContent !== key) {
-            document.getElementById("letter" + i).textContent = key;
-            countCorrectLetters++;
-            correctMatch = true;
-        }
-
-    }
-
-    if (correctMatch === false) {
-        secondsRemaining -= penalty;
-    }
-
-    if (countCorrectLetters === numberOfLetters) {
-        youAreAWinner();
-        endGame();
-    }
-}
-
-
-function resetScore () {
-    myScore.wins = 0;
-    myScore.losses = 0;
-
-    saveScore();
-}
-
-
-function resultMessage(iWon) {
-    var message;
-    if (iWon === true) {
-        message = "YOU WON!!!🏆";
-    } else {
-        message = "YOU LOST!!!😖";
-    }
-    document.removeEventListener("keydown", function(){});
-    clearDivs();
-    addDiv(message, 0);
-}
-
-
-function clearDivs() {
-    gameAreaEl.innerHTML = "";
-}
-
-
-function addDiv(text, index) {
-    var div = document.createElement("div");
-    div.textContent = text;
-    div.setAttribute("id", "letter" + index);
-    gameAreaEl.appendChild(div);
-}
-
-
 function playGame() {
     countCorrectLetters = 0;
     youWon = false;
     countdownEl.style.color = "black";
-
-    startCountdown();
 
     var mysteryWord = getNextWord();
     wordArray = mysteryWord.split("");
@@ -116,6 +46,9 @@ function playGame() {
     for (var i = 0; i < numberOfLetters; i++) {
         addDiv("_", i);
     }
+
+    startCountdown();
+    document.addEventListener("keydown", resolveKeyPress);
 }
 
 
@@ -136,27 +69,16 @@ function getNextWord() {
 }
 
 
-function writeScore() {       
-    winCountEl.textContent = myScore.wins;
-    lossCountEl.textContent = myScore.losses;
+function clearDivs() {
+    gameAreaEl.innerHTML = "";
 }
 
 
-function getScore() {
-    myScore = JSON.parse(localStorage.getItem("scoreStringify"));
-    if (!myScore) {
-        myScore = {
-            wins: 0,
-            losses: 0
-        };
-    }
-    writeScore();
-}
-
-
-function saveScore() {
-    localStorage.setItem("scoreStringify", JSON.stringify(myScore));
-    writeScore();
+function addDiv(text, index) {
+    var div = document.createElement("div");
+    div.textContent = text;
+    div.setAttribute("id", "letter" + index);
+    gameAreaEl.appendChild(div);
 }
 
 
@@ -193,9 +115,32 @@ function startCountdown() {
 }
 
 
-function youAreAWinner() {
-    youWon = true;
-    myScore.wins++;
+function resolveKeyPress(event) {
+    keyPress = event.key;
+    checkForMatch(keyPress);
+ }
+
+
+function checkForMatch(key) {
+    var correctMatch = false;
+    for (var i = 0; i < numberOfLetters; i++) {
+
+        if (wordArray[i] === key && document.getElementById("letter" + i).textContent !== key) {
+            document.getElementById("letter" + i).textContent = key;
+            countCorrectLetters++;
+            correctMatch = true;
+        }
+
+    }
+
+    if (correctMatch === false) {
+        secondsRemaining -= penalty;
+    }
+
+    if (countCorrectLetters === numberOfLetters) {
+        youAreAWinner();
+        endGame();
+    }
 }
 
 
@@ -208,10 +153,54 @@ function youAreALoser() {
 }
 
 
+function youAreAWinner() {
+    youWon = true;
+    myScore.wins++;
+}
+
+
 function endGame() {
-    saveScore();
     resultMessage(youWon);
+    saveScore();
     startButton.textContent = "Play again?";
+}
+
+
+function resultMessage(iWon) {
+    var message;
+    if (iWon === true) {
+        message = "YOU WON!!!🏆";
+    } else {
+        message = "YOU LOST!!!😖";
+    }
+    document.removeEventListener("keydown", resolveKeyPress);
+    clearDivs();
+    addDiv(message, 0);
+}
+
+
+function saveScore() {
+    localStorage.setItem("scoreStringify", JSON.stringify(myScore));
+    writeScore();
+}
+
+
+function writeScore() {       
+    winCountEl.textContent = myScore.wins;
+    lossCountEl.textContent = myScore.losses;
+}
+
+
+resetScoreButton.addEventListener("click", function() {
+    resetScore();
+});
+
+
+function resetScore () {
+    myScore.wins = 0;
+    myScore.losses = 0;
+
+    saveScore();
 }
 
 
@@ -220,5 +209,18 @@ function init() {
     countdownEl.textContent = "Are you ready?";
     getScore();
 }
+
+
+function getScore() {
+    myScore = JSON.parse(localStorage.getItem("scoreStringify"));
+    if (!myScore) {
+        myScore = {
+            wins: 0,
+            losses: 0
+        };
+    }
+    writeScore();
+}
+
 
 init();
