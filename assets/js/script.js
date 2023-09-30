@@ -118,7 +118,6 @@ function getNextWord() {
     wordIndex = JSON.parse(localStorage.getItem("wordIndex"));
     if (!wordIndex) {
         wordIndex = Math.floor(Math.random() * wordList.length);
-        console.log("got random index")
     }
     wordIndex++;
 
@@ -138,7 +137,6 @@ function writeScore() {
 
 function getScore() {
     myScore = JSON.parse(localStorage.getItem("scoreStringify"));
-    console.log(myScore);
     if (!myScore) {
         myScore = {
             wins: 0,
