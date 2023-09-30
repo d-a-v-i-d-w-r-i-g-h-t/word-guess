@@ -203,7 +203,7 @@ function endGame() {
 
 
 function init() {
-    startButton.textContent = "Start"
+    startButton.textContent = "Start";
     countdownEl.textContent = "Are you ready?";
 
     getScore();
