@@ -1,7 +1,7 @@
 var startButton = document.getElementById("start-button");
 var resetScoreButton = document.getElementById("reset-score-button");
 
-var mysteryWordEl = document.getElementById("mystery-word");
+var gameAreaEl = document.getElementById("game-area");
 
 var winCountEl = document.getElementById("winCount");
 var lossCountEl = document.getElementById("lossCount");
@@ -9,28 +9,116 @@ var lossCountEl = document.getElementById("lossCount");
 var countdownEl = document.getElementById("countdown");
 var countdownTextEl = document.getElementById("countdown-text");
 
-const gameDuration = 3;
+const gameDuration = 61;
+const wordList = ["sandwich", "moustache", "cat", "balloon"];
 
-// need Array of mystery words
-// need interval timer to get countdown
-
-
+// on init get scores from storage, if they are not
+// there then save zero values to local variable
 var myScore = {
     wins: 0,
     losses: 0
 };
+var keyPress;
+var wordArray = [];
+var numberOfLetters = 0;
+var countCorrectLetters = 0;
+var youWon = false;
+
+startButton.addEventListener("click", function() {
+    playGame();
+});
 
 resetScoreButton.addEventListener("click", function() {
     resetScore();
 });
 
+document.addEventListener("keydown", function(event) {
+   keyPress = event.key;
+   checkForMatch(keyPress);
+});
+
+
+function checkForMatch(key) {
+
+    for (var i = 0; i < numberOfLetters; i++) {
+
+        if (wordArray[i] === key) {
+            document.getElementById("letter" + i).textContent = key;
+            countCorrectLetters++
+        }
+
+    }
+    if (countCorrectLetters === numberOfLetters) {
+        youAreAWinner();
+        endGame();
+    }
+}
+
+
 function resetScore () {
     myScore.wins = 0;
     myScore.losses = 0;
 
-    writeScore()
+    saveScore()
 }
 
+function resultMessage(iWon) {
+    var message;
+    if (iWon === true) {
+        message = "YOU WON!!!🏆"
+    } else {
+        message = "YOU LOST!!!😖"
+    }
+    clearDivs();
+    addDiv(message, 0)
+}
+
+function clearDivs() {
+    gameAreaEl.innerHTML = "";
+}
+
+function addDiv(text, index) {
+    var div = document.createElement("div");
+    div.textContent = text;
+    div.setAttribute("id", "letter" + index);
+    gameAreaEl.appendChild(div);
+}
+
+function playGame() {
+    countCorrectLetters = 0;
+    youWon = false;
+
+    startCountdown();
+    var mysteryWord = getNextWord();
+    wordArray = mysteryWord.split("");
+
+    numberOfLetters = wordArray.length;
+
+    clearDivs() 
+
+    for (var i = 0; i < numberOfLetters; i++) {
+        addDiv("_", i)
+    }
+}
+
+
+
+function getNextWord() {
+    
+    wordIndex = JSON.parse(localStorage.getItem("wordIndex"));
+    if (!wordIndex) {
+        wordIndex = Math.floor(Math.random() * wordList.length);
+        console.log("got random index")
+    }
+    wordIndex++;
+
+    if (wordIndex >= wordList.length) {
+        wordIndex = 0;
+    }
+    localStorage.setItem("wordIndex", JSON.stringify(wordIndex));
+    
+    return wordList[wordIndex];
+}
 
 
 function writeScore() {       
@@ -49,16 +137,8 @@ function saveScore() {
 }
 
 
-startButton.addEventListener("click", function() {
-    console.log(myScore);
-    startCountdown();
-});
-
-
 function startCountdown() {
     
-    console.log(myScore);
-
     var secondsRemaining = gameDuration;
     var timerInterval = setInterval(function() {
 
@@ -67,36 +147,48 @@ function startCountdown() {
         countdownEl.textContent = secondsRemaining;
         countdownTextEl.textContent = "seconds remaining";
 
+        if (youWon === true) {
+            clearInterval(timerInterval);
+        }
+
         if(secondsRemaining === 0) {
             clearInterval(timerInterval);
 
-            countdownEl.textContent = "Time's up!";
-            countdownTextEl.textContent = "";
-
-            startButton.textContent = "Play again?"
-
-            
-            // temp for testing
-            myScore.wins = 3;
-            myScore.losses = 2;
-
-            console.log(myScore);
-
-            saveScore();
-            // ************
+            youAreALoser()
+            endGame();
         }
 
     }, 1000);
 
 }
 
+function youAreAWinner() {
+    youWon = true;
+    myScore.wins++;
+}
+
+function youAreALoser() {
+    youWon = false;
+    myScore.losses++;
+    countdownEl.textContent = "Time's up!";
+    countdownTextEl.textContent = "";
+}
+
+
+function endGame() {
+    saveScore();
+
+    resultMessage(youWon);
+
+    startButton.textContent = "Play again?"
+}
 
 
 function init() {
     startButton.textContent = "Start"
     countdownEl.textContent = "Are you ready?";
 
-    // getScore();
+    getScore();
 }
 
 init();
