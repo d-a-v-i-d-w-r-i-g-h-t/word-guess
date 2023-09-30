@@ -9,7 +9,7 @@ var lossCountEl = document.getElementById("lossCount");
 var countdownEl = document.getElementById("countdown");
 var countdownTextEl = document.getElementById("countdown-text");
 
-const gameDuration = 61;
+const gameDuration = 60;
 const penalty = 5;
 const wordList = ["sandwich", "moustache", "cat", "balloon", "grocery", "distribution", "river", "chocolate", "possibility", "article", "poet", "philosophy", "housing", "republic", "construction", "restaurant", "payment", "definition", "pizza", "area", "people", "confusion", "childhood", "breath", "leader", "committee", "teaching", "employer", "coffee", "opinion", "queen", "college", "interaction", "psychology", "proposal", "accident", "discussion", "shopping", "mom", "disaster", "clothes", "potato", "session", "growth", "ear", "orange", "procedure", "affair", "salad", "dealer", "hall", "charity", "assumption", "country"];
 
@@ -96,10 +96,9 @@ function addDiv(text, index) {
 function playGame() {
     countCorrectLetters = 0;
     youWon = false;
-    countdownTextEl.textContent = "seconds remaining";
-
 
     startCountdown();
+
     var mysteryWord = getNextWord();
     wordArray = mysteryWord.split("");
 
@@ -154,11 +153,17 @@ function saveScore() {
 
 
 function startCountdown() {
-    
+
     secondsRemaining = gameDuration;
+    countdownEl.textContent = secondsRemaining;
+    countdownTextEl.textContent = "seconds remaining";
+
     var timerInterval = setInterval(function() {
 
         secondsRemaining--;
+        if (secondsRemaining >= 0) {
+            countdownEl.textContent = secondsRemaining;
+        }
 
         if (youWon === true) {
             clearInterval(timerInterval);
@@ -171,9 +176,6 @@ function startCountdown() {
             endGame();
         }
 
-        if (secondsRemaining >= 0) {
-            countdownEl.textContent = secondsRemaining;
-        }
 
     }, 1000);
 
